@@ -17,6 +17,7 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPassword extends State<ForgotPasswordPage> {
+  final TextEditingController email = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,40 +40,49 @@ class _ForgotPassword extends State<ForgotPasswordPage> {
             ),
             SizedBox(height: 60),
 
-            TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.fromLTRB(25, 18, 20, 18),
+            Form(
+              child: TextFormField(
+                controller: email,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.fromLTRB(25, 18, 20, 18),
 
-                labelText: " Email ",
-                labelStyle: TextStyle(
-                  color: Colors.black45,
-                  fontSize: 14,
-                  backgroundColor: Colors.white,
-                ),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
-                floatingLabelAlignment: FloatingLabelAlignment.start,
-
-                hintText: "Enter your email",
-                hintStyle: TextStyle(color: Colors.black45),
-                suffixIcon: Padding(
-                  padding: EdgeInsets.only(right: 12),
-                  child: Icon(
-                    Icons.email_outlined,
-                    color: Colors.grey[500],
-                    size: 30,
+                  labelText: " Email ",
+                  labelStyle: TextStyle(
+                    color: Colors.black45,
+                    fontSize: 14,
+                    backgroundColor: Colors.white,
                   ),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide(color: Colors.grey[300]!, width: 1.5),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide(color: Colors.black45, width: 1.5),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide(color: Colors.grey[300]!, width: 1.5),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                  floatingLabelAlignment: FloatingLabelAlignment.start,
+
+                  hintText: "Enter your email",
+                  hintStyle: TextStyle(color: Colors.black45),
+                  suffixIcon: Padding(
+                    padding: EdgeInsets.only(right: 12),
+                    child: Icon(
+                      Icons.email_outlined,
+                      color: Colors.grey[500],
+                      size: 30,
+                    ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide(
+                      color: Colors.grey[300]!,
+                      width: 1.5,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide(color: Colors.black45, width: 1.5),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25),
+                    borderSide: BorderSide(
+                      color: Colors.grey[300]!,
+                      width: 1.5,
+                    ),
+                  ),
                 ),
               ),
             ),

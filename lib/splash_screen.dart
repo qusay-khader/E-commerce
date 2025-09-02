@@ -106,7 +106,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   child: Text(
-                    _currentPage < _totalPages - 1 ? 'Continue' : 'Continue',
+                    'Continue',
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,

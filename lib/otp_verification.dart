@@ -10,6 +10,8 @@ class otp_verificationPage extends StatefulWidget {
 }
 
 class _MyStatefulPageState extends State<otp_verificationPage> {
+  DateTime? _lastPressedTime;
+  final int _timeLimit = 5;
   int _remainingTime = 59;
   Timer? _timer;
 
@@ -112,10 +114,15 @@ class _MyStatefulPageState extends State<otp_verificationPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Home()),
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => Home()),
+                      (Route) => false,
                     );
+
+                    // Navigator.pushAndRemoveUntil (
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => const Home(),(Route)=>false),
+                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFFF7643),

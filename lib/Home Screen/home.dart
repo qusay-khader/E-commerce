@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import 'package:ecommerce_1/Profile.dart';
+
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -16,8 +18,21 @@ class _HomeState extends State<Home> {
     "asset/icons/Chat bubble Icon.svg",
     "asset/icons/User.svg",
   ];
-  bool isFavorite = false;
-  List<bool> isFavorites = [false, false, false];
+
+  bool isFavorites = false;
+
+  late final List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      _buildHomePage(),
+      _buildFavoritesPage(),
+      _buildChatPage(),
+      ProfilePage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +103,7 @@ class _HomeState extends State<Home> {
             ),
           ),
         ),
+
         appBar: AppBar(
           automaticallyImplyLeading: false,
           toolbarHeight: 75,
@@ -104,11 +120,13 @@ class _HomeState extends State<Home> {
                 hintStyle: TextStyle(color: Colors.black45),
                 fillColor: Colors.grey[200],
                 filled: true,
-                prefixIcon: SvgPicture.asset(
-                  "asset/icons/Search Icon.svg",
-                  width: 20,
-                  height: 14,
-                  fit: BoxFit.scaleDown,
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(12),
+                  child: SvgPicture.asset(
+                    "asset/icons/Search Icon.svg",
+                    width: 20,
+                    height: 14,
+                  ),
                 ),
               ),
             ),
@@ -121,7 +139,7 @@ class _HomeState extends State<Home> {
                 width: 20,
                 height: 20,
               ),
-              padding: EdgeInsets.zero,
+              padding: EdgeInsets.all(12),
               style: IconButton.styleFrom(
                 backgroundColor: Colors.grey[200],
                 shape: RoundedRectangleBorder(
@@ -140,7 +158,7 @@ class _HomeState extends State<Home> {
                     width: 20,
                     height: 20,
                   ),
-                  padding: EdgeInsets.zero,
+                  padding: EdgeInsets.all(12),
                   style: IconButton.styleFrom(
                     backgroundColor: Colors.grey[200],
                     shape: RoundedRectangleBorder(
@@ -153,8 +171,8 @@ class _HomeState extends State<Home> {
                   top: 0,
                   right: 0,
                   child: Container(
-                    width: 20,
-                    height: 20,
+                    width: 22,
+                    height: 22,
                     decoration: BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
@@ -164,7 +182,7 @@ class _HomeState extends State<Home> {
                         '3',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 12,
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -177,573 +195,339 @@ class _HomeState extends State<Home> {
           ],
         ),
 
-        body: SingleChildScrollView(
-          child: Column(
+        body: _pages[_currentIndex], // إصلاح: عرض الصفحة المحددة
+      ),
+    );
+  }
+
+  // صفحة الرئيسية
+  Widget _buildHomePage() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          // A Summer Surprise start
+          Container(
+            margin: EdgeInsets.only(left: 20, right: 20, top: 30),
+            width: double.infinity,
+            height: 100,
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 75, 50, 152),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: -130,
+                  right: -30,
+                  child: Container(
+                    width: 250,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(200),
+                        bottomRight: Radius.circular(100),
+                      ),
+                      color: const Color.fromARGB(
+                        140,
+                        140,
+                        140,
+                        255,
+                      ).withOpacity(0.1),
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  bottom: -375,
+                  left: -50,
+                  child: Container(
+                    width: 400,
+                    height: 400,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(400),
+                      color: const Color.fromARGB(
+                        140,
+                        140,
+                        140,
+                        255,
+                      ).withOpacity(0.1),
+                    ),
+                  ),
+                ),
+
+                Positioned(
+                  top: 20,
+                  left: 30,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'A Summer Surprise',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      Text(
+                        'Cashback 20%',
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // A Summer Surprise end
+
+          // icon button start
+          Container(
+            margin: EdgeInsets.only(top: 30, left: 20, bottom: 15, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildIconButton("asset/icons/Flash Icon.svg", "Flash\nDeal"),
+                _buildIconButton("asset/icons/Bill Icon.svg", "Bill"),
+                _buildIconButton("asset/icons/Game Icon.svg", "Game"),
+                _buildIconButton("asset/icons/Gift Icon.svg", "Daily\nGift"),
+                _buildIconButton("asset/icons/Discover.svg", "More", size: 35),
+              ],
+            ),
+          ),
+
+          // icon button end
+          _buildSectionHeader("Special for you", "See More"),
+
+          Container(
+            height: 150,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                _buildBannerCard(
+                  "asset/images/Image Banner 2.png",
+                  "Smartphone\n18 Brands",
+                ),
+                SizedBox(width: 10),
+                _buildBannerCard(
+                  "asset/images/Image Banner 3.png",
+                  "Fashion\n24 Brands",
+                ),
+              ],
+            ),
+          ),
+
+          // Popular Product
+          _buildSectionHeader("Popular Product", "See More"),
+
+          Container(
+            height: 280,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: 3,
+              itemBuilder: (context, index) {
+                List<String> images = [
+                  "asset/images/Image Popular Product 1.png",
+                  "asset/images/Image Popular Product 2.png",
+                  "asset/images/glap.png",
+                ];
+                List<String> titles = [
+                  "Wireless Controller\nfor PS4™",
+                  "Nike Sport White -\nMan Pant",
+                  "Gloves XC Omega -\nPolygon",
+                ];
+                List<String> prices = ["\$64.99", "\$9.99", "\$99.99"];
+
+                return _buildProductCard(
+                  index,
+                  images[index],
+                  titles[index],
+                  prices[index],
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFavoritesPage() {
+    return Center(
+      child: Text(
+        "Your favorites list is currently empty.",
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildChatPage() {
+    return Center(
+      child: Text(
+        "Chat",
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildIconButton(String iconPath, String text, {double size = 20}) {
+    return Column(
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: SvgPicture.asset(iconPath, width: size, height: size),
+          padding: EdgeInsets.all(18),
+          style: IconButton.styleFrom(
+            backgroundColor: const Color.fromARGB(255, 255, 236, 223),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: Text(
+            text,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: const Color.fromARGB(255, 117, 117, 117),
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(String title, String buttonText) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              buttonText,
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBannerCard(String imagePath, String text) {
+    return Container(
+      margin: EdgeInsets.only(left: 20),
+      width: 320,
+      height: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        image: DecorationImage(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.3),
+            BlendMode.darken,
+          ),
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProductCard(
+    int index,
+    String imagePath,
+    String title,
+    String price, {
+    Key? key,
+  }) {
+    return Container(
+      key: key,
+      width: 210,
+      margin: EdgeInsets.only(left: 15, right: 5),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height: 160,
+            decoration: BoxDecoration(
+              color: Colors.grey[100],
+              borderRadius: BorderRadius.circular(12),
+              image: DecorationImage(
+                image: AssetImage(imagePath),
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              height: 1.4,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(height: 6),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              //A Summer Surprise start
-              Container(
-                margin: EdgeInsets.only(left: 20, right: 20, top: 30),
-                width: 375,
-                height: 100,
-
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 75, 50, 152),
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      top: -130,
-                      right: -30,
-                      child: Container(
-                        width: 250,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(200),
-                            bottomRight: Radius.circular(100),
-                          ),
-                          color: const Color.fromARGB(
-                            140,
-                            140,
-                            140,
-                            255,
-                          ).withOpacity(0.1),
-                        ),
-                      ),
-                    ),
-
-                    Positioned(
-                      bottom: -375,
-                      left: -50,
-                      child: Container(
-                        width: 400,
-                        height: 400,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(400),
-                          color: const Color.fromARGB(
-                            140,
-                            140,
-                            140,
-                            255,
-                          ).withOpacity(0.1),
-                        ),
-                      ),
-                    ),
-
-                    Positioned(
-                      top: 20,
-                      left: 30,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'A Summer Surprise',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          Text(
-                            'Cashback 20%',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+              Text(
+                price,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 255, 118, 67),
+                  fontWeight: FontWeight.bold,
+                  fontSize: 25,
                 ),
               ),
-              //A Summer Surprise end
-              //icon button start
-              Container(
-                margin: EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  bottom: 15,
-                  right: 20,
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: BoxConstraints(),
+                iconSize: 35,
+                icon: Icon(
+                  isFavorites ? Icons.favorite : Icons.favorite_border,
+                  color: isFavorites ? Colors.red : Colors.grey,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "asset/icons/Flash Icon.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                          padding: EdgeInsets.all(18),
-                          style: IconButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              236,
-                              223,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Flash\n Deal",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 117, 117, 117),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "asset/icons/Bill Icon.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                          padding: EdgeInsets.all(18),
-                          style: IconButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              236,
-                              223,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Bill",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 117, 117, 117),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "asset/icons/Game Icon.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                          padding: EdgeInsets.all(18),
-                          style: IconButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              236,
-                              223,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Game",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 117, 117, 117),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "asset/icons/Gift Icon.svg",
-                            width: 20,
-                            height: 20,
-                          ),
-                          padding: EdgeInsets.all(18),
-                          style: IconButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              236,
-                              223,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "Daily\n Gift",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 117, 117, 117),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: SvgPicture.asset(
-                            "asset/icons/Discover.svg",
-                            width: 35,
-                            height: 35,
-                          ),
-                          padding: EdgeInsets.all(10),
-                          style: IconButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(
-                              255,
-                              255,
-                              236,
-                              223,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: Text(
-                            "More",
-                            style: TextStyle(
-                              color: const Color.fromARGB(255, 117, 117, 117),
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              //icon button end
-              //Special for you Row
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Special for you", style: TextStyle(fontSize: 24)),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "See More",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // card
-              Container(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        padding: EdgeInsets.all(20),
-                        width: 320,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: AssetImage(
-                              "asset/images/Image Banner 2.png",
-                            ),
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.3),
-                              BlendMode.darken,
-                            ),
-                          ),
-                        ),
-
-                        child: Text(
-                          "Smartphone\n18 Brands",
-                          style: TextStyle(color: Colors.white, fontSize: 24),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        width: 320,
-                        height: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: AssetImage(
-                              "asset/images/Image Banner 3.png",
-                            ),
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.3), // الغامق
-                              BlendMode.darken,
-                            ),
-                          ),
-                        ),
-
-                        child: Text(
-                          "Fashion\n24 Brands",
-                          style: TextStyle(color: Colors.white, fontSize: 24),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              //for you
-              Container(
-                margin: EdgeInsets.only(
-                  bottom: 0,
-                  left: 20,
-                  right: 20,
-                  top: 30,
-                ),
-
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text("Popular Product", style: TextStyle(fontSize: 24)),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "See More",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // card
-              Container(
-                margin: EdgeInsets.only(top: 20, bottom: 20),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            padding: EdgeInsets.all(20),
-                            width: 200,
-                            height: 200,
-
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  "asset/images/Image Popular Product 1.png",
-                                ),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          Text("Wireless Controller\nfor PS4™"),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\$64.99      ",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    255,
-                                    118,
-                                    67,
-                                  ),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              IconButton(
-                                padding: EdgeInsets.all(10),
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.grey[200],
-                                ),
-                                icon: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavorite ? Colors.red : Colors.grey,
-                                  size: 25,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    isFavorite = !isFavorite;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            padding: EdgeInsets.all(20),
-                            width: 200,
-                            height: 200,
-
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  "asset/images/Image Popular Product 2.png",
-                                ),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          Text("Nike Sport White -\n Man Pant"),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\$9.99      ",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    255,
-                                    118,
-                                    67,
-                                  ),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              IconButton(
-                                padding: EdgeInsets.all(10),
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.grey[200],
-                                ),
-                                icon: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavorite ? Colors.red : Colors.grey,
-                                  size: 25,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    isFavorite = !isFavorite;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Container(
-                            alignment: Alignment(3, 2),
-                            margin: EdgeInsets.symmetric(horizontal: 20),
-                            padding: EdgeInsets.all(20),
-                            width: 200,
-                            height: 200,
-
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                image: AssetImage("asset/images/glap.png"),
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          Text("Gloves XC Omega -\nPolygon"),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\$99.99      ",
-                                style: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    255,
-                                    118,
-                                    67,
-                                  ),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              IconButton(
-                                padding: EdgeInsets.all(10),
-                                style: IconButton.styleFrom(
-                                  backgroundColor: Colors.grey[200],
-                                ),
-                                icon: Icon(
-                                  isFavorite
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: isFavorite ? Colors.red : Colors.grey,
-                                  size: 25,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    isFavorite = !isFavorite;
-                                  });
-                                },
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
+                onPressed: () {
+                  setState(() {
+                    isFavorites = !isFavorites;
+                  });
+                },
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
